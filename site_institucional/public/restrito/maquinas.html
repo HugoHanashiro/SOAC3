@@ -1,0 +1,134 @@
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link href="../assets/img/LogoAzulEscuro.svg" rel="icon">
+  <title>Gerenciamento de Máquinas</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous"> 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+  <script src="https://kit.fontawesome.com/2eecc47c4e.js" crossorigin="anonymous"></script>
+
+  <link href="../assets/css/dashboard.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="./js/main.js"></script>
+</head>
+
+<body id="page-top" class="" onload="iniciarSessao(pagina)">
+  <div id="wrapper">
+    <!-- Sidebar -->
+    <my-sidebar></my-sidebar>
+    <!-- Sidebar -->
+    <div id="content-wrapper" class="d-flex flex-column">
+      <div id="content">
+        <!-- TopBar -->
+        <my-topbar></my-topbar>
+        <!-- Topbar -->
+        <!-- Container Fluid-->
+        <div class="container-fluid" id="container-wrapper">
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Gerenciamento de Máquinas</h1>
+
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12 mb-4">
+              <!-- Simple Tables -->
+              <div class="card">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+  
+                </div>
+                <div class="table-responsive">
+                  <table class="table align-items-center table-flush">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>MAC Andress</th>
+                        <th>Torre de Controle</th>
+                        <th>Ação</th>
+                      </tr>
+                    </thead>
+                    <tbody id="body-table">
+                    </tbody>
+                  </table>
+                </div>
+                <div class="card-footer"></div>
+              </div>
+            </div>
+          </div>
+          <!--Row-->
+        </div>
+        <!---Container Fluid-->
+      </div>
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>AIR-DATA
+              <script> document.write(new Date().getFullYear()); </script>2022 - DEVELOPED BY
+              <b><a target="_blank">SPTECH STUDENTS</a></b>
+            </span>
+          </div>
+        </div>
+      </footer>
+      <!-- Footer -->
+    </div>
+  </div>
+
+  <!-- Scroll to top -->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+  <script src="../assets/vendor/jquery/jquery.min.js"></script>
+  <script src="../assets/js/ruang-admin.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="./js/script.js"></script>
+  <script>
+
+      var pagina = "maquinas";
+
+      function listarTabelaMaquinas(listaMaquinas) {
+        var bodyTable = document.getElementById('body-table');
+        
+        for(i = 0; i < listaMaquinas.length; i++) {
+          var mac = listaMaquinas[i].idServidor;
+          mac = mac.replace(/:/g, "-").toUpperCase();
+          bodyTable.innerHTML += `
+          <tr>
+            <td><a href="#">${mac}</a></td>
+            <td>${listaMaquinas[i].fkTorre}</td>
+            <td><a href="#" onclick="entrarMonitoramento('${listaMaquinas[i].idServidor}')" class="btn btn-sm btn-primary">Monitorar</a></td>
+          </tr>
+          `
+        }
+      }
+
+      function entrarMonitoramento(mac) {
+        sessionStorage.MAC_SERVIDOR = mac;
+
+        Swal.fire({
+          title: 'Carregando...',
+          html: 'Por favor, aguarde...',
+          allowEscapeKey: false,
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading()
+          }
+        });
+
+        setTimeout(() => {
+            window.location = "./dashboard.html";
+            Swal.close();
+        }, "2000")
+
+        
+      }
+
+      document.querySelector("#maquina-link").classList.add("active")
+
+  </script>
+</body>
+</html>

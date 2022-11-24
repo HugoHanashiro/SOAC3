@@ -1,0 +1,382 @@
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="../assets/img/LogoAzulEscuro.svg" rel="icon">
+    <title>Painel Geral</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
+    <link href="../assets/css/dashboard.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/2eecc47c4e.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="./js/main.js"></script>
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        #map {
+            height: 35em;
+            width: 80%;
+        }
+    </style>
+</head>
+
+<body id="page-top" class="" onload="iniciarSessao(pagina)">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <my-sidebar></my-sidebar>
+        <!-- Sidebar -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <!-- TopBar -->
+                <my-topbar></my-topbar>
+
+                <!-- Container Fluid-->
+                <div class="container-fluid" id="container-wrapper">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Painel Geral</h1>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3 mb-3 card text-center">
+                            <div class="card-body mt-0">
+                                <div class="row">
+                                    <h4 class="card-title">Máquinas offline</h4>
+                                </div>
+                                <div class="row">
+                                    <h3><span id="spnServidoresOffline">0</span></h3>
+                                </div>
+                                <div class="row">
+                                    <button type="button" class="btn btn-link" id="btnVerMaquinasOffline" disabled
+                                        onclick="mostrarModal()">Ver máquinas offline</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1"></div>
+                        <div class="col-md-3 mb-3 card text-center d-flex justify-content-center">
+                            <h4>Servidores online</h4>
+                            <h3><span id="spnServidoresOnline">0</span></h3>
+                        </div>
+                        <div class="col-md-1"></div>
+                        <div class="col-md-3 mb-3 card text-center d-flex justify-content-center">
+                            <h4>Alertas recentes:</h4>
+                            <h3><span id="spnAlertasRecentes">0</span></h3>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xl-8 col-lg-7 mb-4">
+                            <div class="card">
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">ALERTAS</h6>
+                                    <a class="m-0 float-right btn btn-danger btn-sm" href="alertas.html">HISTORICO <i
+                                            class="fas fa-chevron-right"></i></a>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table align-items-center table-flush">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Alertas ID</th>
+                                                <th>Motivo</th>
+                                                <th>Hardware</th>
+                                                <th>Data</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="corpo-tabela-alertas">
+                                            <tr>
+                                                <td><a>000001</a></td>
+                                                <td>Sobrecarregamento</td>
+                                                <td>CPU</td>
+                                                <td><span>01/01/2022</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="card-footer"></div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-xl-8 col-lg-7 mb-4">
+                            <div class="card">
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">MÁQUINAS COM MAIOR USO DE CPU</h6>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table align-items-center table-flush">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Nome do Componente</th>
+                                                <th>ID do Servidor</th>
+                                                <th>Maior porcentagem alcançada</th>
+                                                <th>Horário</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="corpo-tabela-uso-cpu">
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="card-footer"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div id="map"></div>
+                    </div>
+                    <script>
+                        function initMap() {
+                            //opções do mapa
+                            var options = {
+                                zoom: 10,
+                                center: { lat: -23.5489, lng: -46.6388 }
+                            }
+
+                            //criando o novo mapa
+                            var map = new google.maps.Map(document.getElementById('map'), options);
+
+                            /*
+                            //adicionando marcador
+                            var marker = new google.maps.Marker({
+                                position:{lat:-23.42875212910595,lng:-46.47339255864737},
+                                map:map,
+                                icon:'../assets/img/maps/blue-marker.png'
+                            })
+
+                            //adicionando pop up dos marcadores
+                            var infoWindow = new google.maps.InfoWindow({
+                                content:'<h3>Aeroporto de Guarulhos</h3><p>Status: operante</p>'
+                            })
+
+                            marker.addListener('click', function(){
+                                infoWindow.open(map, marker);
+                            })
+                            */
+
+                            var markers = [
+                                {
+                                    coords: { lat: -23.42875212910595, lng: -46.47339255864737 },
+                                    iconImage: '../assets/img/maps/blue-marker.png',
+                                    content: '<h3>Aeroporto de Guarulhos</h3><h5>Status: Operante</h5>'
+                                },
+                                {
+                                    coords: { lat: -23.62684767170124, lng: -46.656542903243064 },
+                                    iconImage: '../assets/img/maps/red-marker.png',
+                                    content: '<h3>Aeroporto de Congonhas</h3><h5>Status: Inativo</h5>'
+                                }
+                            ]
+
+                            markers.forEach(function (marcador){
+                                adicionarMarcador(marcador)
+                            })
+
+                            //função para adicionar marcador
+                            function adicionarMarcador(props) {
+                                var marker = new google.maps.Marker({
+                                    position: props.coords,
+                                    map: map,
+                                    icon: props.iconImage
+                                })
+
+                                //checando por ícone customizado
+                                if (props.iconImage) {
+                                    marker.setIcon(props.iconImage);
+                                }
+
+                                //checando por conteúdo
+                                if (props.content) {
+                                    //adicionando pop up dos marcadores
+                                    var infoWindow = new google.maps.InfoWindow({
+                                        content: props.content
+                                    })
+
+                                    marker.addListener('click', function () {
+                                        infoWindow.open(map, marker);
+                                    })
+                                }
+                            }
+                        }
+                    </script>
+                    <script async
+                        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFgalD2gdnIe0jQEnYsHTAqdY8-XECQrI&callback=initMap">
+                        </script>
+                </div>
+                <!---Container Fluid-->
+            </div>
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>AIR-DATA
+                            <script> document.write(new Date().getFullYear()); </script> - DEVELOPED BY
+                            <b><a target="_blank">SPTECH STUDENTS</a></b>
+                        </span>
+                    </div>
+                </div>
+            </footer>
+            <!-- Footer -->
+        </div>
+    </div>
+    <!-- Scroll to top -->
+    <a class="scroll-to-top rounded" href="#page-top" style="display: inline;">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    <script src="../assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../assets/js/ruang-admin.min.js"></script>
+    <script src="../assets/vendor/chart.js/Chart.min.js"></script>
+    <script src="../assets/js/demo/chart-area-demo.js"></script>
+    <script src="./js/script.js"></script>
+    <script src="./js/dados.js"></script>
+
+</body>
+
+</html>
+
+<script>
+
+    // var pagina = "painel";
+    var pagina = "painelAlertas";
+
+    //listando as máquinas com o estado
+    let maquinasOffline = [];
+    let maquinasOnline = [];
+    fetch('/maquinas/listarComEstado', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            fkTorreServer: sessionStorage.ID_TORRE
+        })
+    }).then(function (resultado) {
+        resultado.json().then(function (resJson) {
+            resJson.forEach(function (maquina) {
+                if (maquina.estado == 'OFFLINE') {
+                    maquinasOffline.push(maquina)
+                }
+                if (maquina.estado == 'ONLINE') {
+                    maquinasOnline.push(maquina)
+                }
+            });
+            document.getElementById('spnServidoresOffline').innerHTML = maquinasOffline.length;
+            document.getElementById('spnServidoresOnline').innerHTML = maquinasOnline.length;
+            listarMaquinasOffline();
+            document.getElementById('btnVerMaquinasOffline').disabled = false;
+        });
+    });
+
+    //Pegando a quantidade de alertas recentes
+    fetch('/alertas/listarRecentes', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            fkTorreServer: sessionStorage.ID_TORRE
+        })
+    }).then(function (resultado) {
+        resultado.json().then(function (resJson) {
+            document.getElementById('spnAlertasRecentes').innerHTML = resJson.length;
+        })
+    })
+
+    //pegando os servidores com maior uso de CPU
+    fetch('/maquinas/listarMaiorUsoCpu', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            fkTorreServer: sessionStorage.ID_TORRE
+        })
+    }).then(function (resultado) {
+        resultado.json().then(function (resJson) {
+            let tabelaUsoCpu = document.getElementById('corpo-tabela-uso-cpu');
+            resJson.forEach((maquina) => {
+                tabelaUsoCpu.innerHTML += `<tr>
+                                                <td>${maquina.nomeComponente}</td>
+                                                <td>${maquina.idServidor}</td>
+                                                <td>${maquina.valorLido}</td>
+                                                <td>${maquina.ultimoHorario}</td>
+                                            </tr>`
+            })
+        })
+    })
+
+    let tabelaOffline = "";
+    function listarMaquinasOffline() {
+        tabelaOffline =
+            '<div class="col-12">' +
+            '<div class="card">' +
+            '<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">' +
+            '<h6 class="m-0 font-weight-bold text-primary">MÁQUINAS OFFLINE</h6>' +
+            '</div>' +
+            '<div class="table-responsive">' +
+            '<table class="table align-items-center table-flush">' +
+            '<thead class="thead-light">' +
+            '<tr>' +
+            '<th>ID da Torre</th>' +
+            '<th>ID do Servidor</th>' +
+            '<th>Última leitura</th>' +
+            '</tr>' +
+            '</thead>' +
+            '<tbody id="corpo-tabela-offline">';
+        maquinasOffline.forEach(function (maquina) {
+            tabelaOffline += `
+            <tr>
+                <td>${maquina.fkTorre}</td>
+                <td>${maquina.idServidor}</td>
+                <td>${maquina.ultimaLeitura}</td>
+            </tr>
+            `
+        });
+        tabelaOffline +=
+            '</tbody>' +
+            '</table>' +
+            '</div>' +
+            '<div class="card-footer"></div>' +
+            '</div>' +
+            '</div>';
+    }
+
+    function mostrarModal() {
+        Swal.fire({
+            html: tabelaOffline
+        })
+    }
+
+    function listarTabelaAlertas(listaAlertas) {
+        var bodyTable = document.getElementById('corpo-tabela-alertas');
+        bodyTable.innerHTML = '';
+
+        for (i = 0; i < listaAlertas.length; i++) {
+            var mac = listaAlertas[i].idServidor;
+            mac = mac.replace(/:/g, "-").toUpperCase();
+
+            var dataHorario = listaAlertas[i].momentoAlerta.split("T");
+            dataHorario = [dataHorario[0].replace(/-/g, "/"), dataHorario[1].slice(0, 8)];
+
+            bodyTable.innerHTML += `
+            <tr>
+              <td>${listaAlertas[i].idAlerta}</td>
+              <td>${listaAlertas[i].statusAlerta}</td>
+              <td>${listaAlertas[i].tipoComponente}</td>
+              <td>${dataHorario}</td>
+            </tr>
+          `
+        }
+    }
+
+    document.querySelector("#painel-link").classList.add("active")
+</script>

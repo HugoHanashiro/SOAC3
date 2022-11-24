@@ -1,0 +1,224 @@
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link href="../assets/img/LogoAzulEscuro.svg" rel="icon">
+  <title>Alertas</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous"> 
+  <script src="https://kit.fontawesome.com/2eecc47c4e.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
+  <link href="../assets/css/dashboard.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="./js/main.js"></script>
+</head>
+
+<body id="page-top" onload="iniciarSessao(pagina)">
+  <div id="wrapper">
+    <!-- Sidebar -->
+    <my-sidebar></my-sidebar>
+    <!-- Sidebar -->
+    <div id="content-wrapper" class="d-flex flex-column">
+      <div id="content">
+        <!-- TopBar -->
+        <my-topbar></my-topbar>
+        <!-- Topbar -->
+        <!-- Container Fluid-->
+        <div class="container-fluid" id="container-wrapper">
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Histórico de Alertas</h1>
+            <div class="legenda">
+              <div class="cpu">
+                Métrica aplicada aos componentes<br><br>
+                Entre 70% e 75%: <b>Perigo</b><br>
+                Entre 76% e 85%: <span style="color: rgb(223, 201, 2);"><b>Crítico</b></span><br>
+                Entre 86% e 95%: <span style="color: orange;"><b>Risco de falha</b></span><br>
+                Maior que 95%: <span style="color: red;"><b>Falha</b></span><br>
+              </div>
+              
+            </div>
+            
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12 mb-4">
+              <!-- Simple Tables -->
+              <div class="card">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <select class="dropdown-toggle btn btn-sm btn-select" id="selecionar-maquina">
+                    <option value="null">Selecionar Maquina</option>
+                  </select>
+                  <select class="dropdown-toggle btn btn-sm btn-select" id="selecionar-hardware">
+                    <option value="null">Selecionar Hardware</option>
+                  </select>
+                  <input onclick="filtrar()" id="filtrar" class="dropdown-toggle btn btn-primary btn-sm" type="button" value="Filtrar">
+                </div>
+                <div class="table-responsive">
+                  <table class="table align-items-center table-flush">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>Alertas ID</th>
+                        <th>Maquina</th>
+                        <th>Hardware</th>
+                        <th>Motivo</th>
+                        <th>Data</th>                       
+                      </tr>
+                    </thead>
+                    <tbody id="body-table">
+                    </tbody>
+                  </table>
+                </div>
+                <div class="card-footer text-center">
+                  <a id="btn-verMais" class="m-0 small text-primary card-link">VER MAIS <i class="fas fa-chevron-right"></i></a>
+                  <a id="btn-verMenos" class="m-0 small text-primary card-link">VER MENOS <i class="fas fa-chevron-right"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--Row-->
+        </div>
+        <!---Container Fluid-->
+      </div>
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>AIR-DATA
+              <script> document.write(new Date().getFullYear()); </script>20222022 - DEVELOPED BY
+              <b><a target="_blank">SPTECH STUDENTS</a></b>
+          </span>
+          </div>
+        </div>
+      </footer>
+      <!-- Footer -->
+    </div>
+  </div>
+
+  <!-- Scroll to top -->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <script src="../assets/vendor/jquery/jquery.min.js"></script>
+  <script src="../assets/js/ruang-admin.min.js"></script>
+  <script src="./js/script.js"></script>
+
+</body>
+</html>
+<script>
+
+  var pagina = "alertas";
+
+  function listarTabelaAlertas(listaAlertas) {
+    var bodyTable = document.getElementById('body-table');
+    bodyTable.innerHTML = '';
+    
+    for(i = 0; i < listaAlertas.length; i++) {
+      var mac = listaAlertas[i].idServidor;
+      mac = mac.replace(/:/g, "-").toUpperCase();
+
+      var dataHorario = listaAlertas[i].momentoAlerta.split("T");
+      dataHorario = [dataHorario[0].replace(/-/g, "/"), dataHorario[1].slice(0, 8)];
+
+      bodyTable.innerHTML += `
+        <tr>
+          <td><a href="#">${listaAlertas[i].idAlerta}</a></td>
+          <td>${mac}</td>
+          <td>${listaAlertas[i].tipoComponente}</td>
+          <td>${listaAlertas[i].statusAlerta}</td>
+          <td>${dataHorario}</td>
+        </tr>
+      `
+    }
+  }
+
+  var btnVerMais = document.getElementById('btn-verMais');
+  var btnVerMenos = document.getElementById('btn-verMenos');
+
+  const selectHardware = document.getElementById('selecionar-hardware');
+  const selectMaquina = document.getElementById('selecionar-maquina');
+
+  function listarFiltros(listaFiltros) {
+
+    var macAtual = '';
+    var componenteAtual = '';
+
+    for(i = 0; i < listaFiltros.length; i++) {
+      var mac = listaFiltros[i].idServidor;
+      mac = mac.replace(/:/g, "-").toUpperCase();
+
+      if(mac != macAtual) {
+        macAtual = mac;
+        selectMaquina.innerHTML += `
+          <option value="${listaFiltros[i].idServidor}">${mac}</option>
+        `
+      }
+
+      if(listaFiltros[i].tipoComponente != componenteAtual) {
+        componenteAtual = listaFiltros[i].tipoComponente;
+        selectHardware.innerHTML += `
+          <option value="${listaFiltros[i].tipoComponente}">${listaFiltros[i].tipoComponente}</option>
+        `
+      }
+    }
+  }
+
+  function filtrar() {
+    var optHardware = selectHardware.value;
+    var optMaquina = selectMaquina.value;
+    const limite = 200;
+
+    fetch("/alertas/receberDadosFiltro", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            hardwareServer: optHardware,
+            maquinaServer: optMaquina,
+            limiteServer: limite,
+            fkTorreServer: sessionStorage.ID_TORRE,
+        })
+    }).then(function (resposta) {
+        console.log("resposta: ", resposta);
+        if (resposta.ok) {
+            resposta.json().then(json => {
+                console.log(json)
+
+                if(json == false) {
+                  location.reload()
+                } else {
+                  listarTabelaAlertas(json)
+
+                  btnVerMais.style.display = 'none';
+                  btnVerMenos.style.display = 'none';
+                }
+
+            });
+        } else {
+            console.log('ERRO - não foi possível receber os dados dos alertas filtrados')
+        }
+    }).catch(function (resposta) {
+        console.log(`#ERRO: ${resposta}`);
+    });
+  }
+
+  btnVerMais.addEventListener('click', () => {
+    receberDadosAlertas(sessionStorage.ID_TORRE, 200);
+
+    setInterval(() => {
+      btnVerMais.style.display = 'none';
+      btnVerMenos.style.display = 'block';
+    }, 500);
+  });
+
+  btnVerMenos.addEventListener('click', () => {
+    location.reload()
+  });
+
+
+document.querySelector("#alerta-link").classList.add("active")
+
+</script>

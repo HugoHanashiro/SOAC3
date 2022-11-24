@@ -1,0 +1,19 @@
+sudo apt update && sudo apt upgrade
+sudo apt install docker.io
+
+git clone https://github.com/Pedro-Jsn/projeto-individual-airdata.git
+
+sudo systemctl start docker
+sudo systemctl enable docker
+
+docker build -t airdata-bd .
+
+docker run -d -p 3306:3306 -e "MYSQL_ROOT_PASSWORD=urubu100" -e "MYSQL_DATABASE=airData" airdata-bd
+
+docker exec -it id bash
+
+docker build -t my-python-app .
+
+docker run -it --rm --name container-python my-python-app
+
+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

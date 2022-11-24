@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>AirData</title>
+
+
+  <link href="assets/img/LogoAzulEscuro.svg" rel="icon">
+  <link href="assets/img/LogoAzulEscuro.svg" rel="applicone-touch-icon">
+
+
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
+
+
+
+
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <link href="assets/css/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+  <!-- ======= Header ======= -->
+  <header id="header" class="d-flex align-items-center">
+    <div class="container d-flex align-items-center justify-content-between">
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <a href="index.html" class="logo"><img src="assets/img/LogoAzulEscuro.svg" alt=""></a>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li>|</li>
+          <li><a href="sing-up.html">Cadastre-se</a></li>
+          <li><a href="sing-in.html">Entrar</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main">
+
+    <!-- ======= Contact Section ======= -->
+    <section id="contact" class="contact">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+
+          <h3><span>Cadastre-se</span></h3>
+        </div>
+
+
+        <div class="row" data-aos="fade-up" data-aos-delay="100">
+
+
+
+          <div class="col-lg-12">
+            <form role="form" class="email-form">
+              <div class="row">
+                <h6>Empresa</h6>
+                <div class="row">
+                  <div class="col-lg-4 col-md-12 form-group">
+                    Nome da Empresa
+                    <input type="text" class="form-control" name="nomeEmpresa" id="nomeEmpresa"
+                      placeholder="Ex: AirData">
+                  </div>
+                  <div class="col-lg-4 col-md-6 form-group">
+                    CNPJ
+                    <input type="text" name="cnpjEmpresa" class="form-control" id="cnpjEmpresa"
+                      placeholder="00.000.000/0000-00" maxlength="18">
+                  </div>
+                  <div class="col-lg-4 col-md-6  form-group">
+                    Telefone
+                    <input type="tel" name="telefoneEmpresa" class="form-control" id="telefoneEmpresa"
+                      placeholder="(00) 0000-0000" maxlength="14">
+                  </div>
+
+                </div>
+              </div>
+              <div class="row">
+                <h6>Aeroporto</h6>
+                <div class="col-lg-4 col-md-4 form-group">
+                  Nome do Aeroporto
+                  <input type="text" class="form-control" name="nomeAeroporto" id="nomeAeroporto"
+                    placeholder="Ex: AirData">
+                </div>
+                <div class="col-lg-4 col-md-4 form-group">
+                  CEP
+                  <input onkeyup="cep()" type="text" class="form-control" name="cepAeroporto" id="cepAeroporto"
+                    placeholder="00000-000" maxlength="9">
+                </div>
+
+                <div class="col-lg-4 col-md-4 form-group">
+                  Estado
+                  <select id="ufAeroporto" class="form-control js-example-basic-single">
+                    <option value="AC">AC - Acre</option>
+                    <option value="AL">AL - Alagoas</option>
+                    <option value="AP">AP - Amapá</option>
+                    <option value="AM">AM - Amazonas</option>
+                    <option value="BA">BA - Bahia</option>
+                    <option value="CE">CE - Ceará</option>
+                    <option value="DF">DF - Distrito Federal</option>
+                    <option value="ES">ES - Espírito Santo</option>
+                    <option value="GO">GO - Goiás</option>
+                    <option value="MA">MA - Maranhão</option>
+                    <option value="MT">MT - Mato Grosso</option>
+                    <option value="MS">MS - Mato Grosso do Sul</option>
+                    <option value="MG">MG - Minas Gerais</option>
+                    <option value="PA">PA - Pará</option>
+                    <option value="PB">PB - Paraíba</option>
+                    <option value="PR">PR - Paraná</option>
+                    <option value="PE">PE - Pernambuco</option>
+                    <option value="PI">PI - Piauí</option>
+                    <option value="RJ">RJ - Rio de Janeiro</option>
+                    <option value="RN">RN - Rio Grande do Norte</option>
+                    <option value="RS">RS - Rio Grande do Sul</option>
+                    <option value="RO">RO - Rondônia</option>
+                    <option value="RR">RR - Roraima</option>
+                    <option value="SC">SC - Santa Catarina</option>
+                    <option value="SP">SP - São Paulo</option>
+                    <option value="SE">SE - Sergipe</option>
+                    <option value="TO">TO - Tocantins</option>
+                  </select>
+
+
+                </div>
+                <div class="col-lg-3 col-md-4 form-group">
+                  Cidade
+                  <input type="text" class="form-control" name="cidadeAeroporto" id="cidadeAeroporto"
+                    placeholder="Ex: São Paulo">
+                </div>
+                <div class="col-lg-3 col-md-4 form-group">
+                  Bairro
+                  <input type="text" class="form-control" name="bairroAeroporto" id="bairroAeroporto"
+                    placeholder="Ex: Jardins">
+                </div>
+                <div class="col-lg-3 col-md-4 form-group">
+                  Rua
+                  <input type="text" class="form-control" name="ruaAeroporto" id="ruaAeroporto"
+                    placeholder="Ex: Rua Brasil">
+                </div>
+                <div class="col-lg-3 col-md-4 form-group">
+                  Número
+                  <input type="number" class="form-control" name="numeroAeroporto" id="numeroAeroporto"
+                    placeholder="EX: 123">
+                </div>
+
+              </div>
+
+              <div class="row">
+                <h6>Informações Pessoais</h6>
+                <div class="col-lg-4 col-md-12 form-group">
+                  Nome
+                  <input type="text" class="form-control" name="nomePessoal" id="nomePessoal"
+                    placeholder="Pedro Jesuino">
+                </div>
+
+                <div class="col-lg-4 col-md-4 form-group">
+                  Email Pessoal
+                  <input type="email" class="form-control" name="emailPessoal" id="emailPessoal"
+                    placeholder="pedrojesuino@airdata.com">
+                </div>
+
+                <div class="col-lg-4 col-md-12 form-group">
+                  CPF
+                  <input type="text" class="form-control" name="cpfPessoal" id="cpfPessoal" placeholder="000.000.000-00"
+                    maxlength="14">
+                </div>
+
+                <div class="col-lg-4 col-md-6 form-group">
+                  Senha
+                  <input type="password" name="password" class="form-control" id="password" placeholder="••••••••">
+                </div>
+                <div class="col-lg-4 col-md-6 form-group">
+                  Confirmação de Senha
+                  <input type="password" name="passwordConfirm" class="form-control" id="passwordConfirm"
+                    placeholder="••••••••">
+                </div>
+              </div>
+
+              <div class="text-center"><button type="button" onclick="cadastrar()">Cadastrar</button></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section><!-- End Contact Section -->
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-4 col-md-6 footer-contact">
+            <h3>AirData</h3>
+            <p>
+              Rua Haddock Lobo, 595 <br>
+              São Paulo, SP 01414-00<br>
+              Brasil <br><br>
+              <strong>Telefone:</strong> (11) 3330-4616<br>
+              <strong>Email:</strong> airdata-grupo.slack.com<br>
+            </p>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Links Uteis</h4>
+            <ul>
+              <li><i class="bi bi-arrow-right-short" style="font-size: 1rem;"></i> <a href="#hero">Home</a></li>
+              <li><i class="bi bi-arrow-right-short" style="font-size: 1rem;"></i> <a href="#produto">Baixar</a></li>
+              <li><i class="bi bi-arrow-right-short" style="font-size: 1rem;"></i> <a href="#sobre">Sobre</a></li>
+              <li><i class="bi bi-arrow-right-short" style="font-size: 1rem;"></i> <a href="#">Termos de serviço</a>
+              </li>
+              <li><i class="bi bi-arrow-right-short" style="font-size: 1rem;"></i> <a href="#">Politica de
+                  privacidade</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Nossas redes sociais</h4>
+            <div class="social-links mt-3">
+              <a href="https://twitter.com/explore" class="twitter"><i class="bi bi-twitter"></i></a>
+              <a href="https://github.com/CCO-AirData" class="facebook"><i class="bi bi-github"></i></a>
+              <a href="https://www.instagram.com/s" class="instagram"><i class="bi bi-instagram"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container py-4">
+      <div class="copyright">
+        &copy; Copyright <strong><span>AirData</span></strong>. Todos os direitos reservados.
+      </div>
+  </footer>
+  <div id="preloader"></div>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+
+  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
+
+  <script src="assets/js/main.js"></script>
+  <script>
+
+
+    function cadastrar() {
+
+      var nomeEmpresaVar = nomeEmpresa.value;
+      var cnpjEmpresaVar = cnpjEmpresa.value;
+      var telefoneEmpresaVar = telefoneEmpresa.value;
+      var nomeAeroportoVar = nomeAeroporto.value;
+      var cepAeroportoVar = cepAeroporto.value;
+      var cidadeAeroportoVar = cidadeAeroporto.value;
+      var bairroAeroportoVar = bairroAeroporto.value;
+      var ruaAeroportoVar = ruaAeroporto.value;
+      var ufAeroportoVar = ufAeroporto.value;
+      var numeroAeroportoVar = numeroAeroporto.value;
+      var nomePessoalVar = nomePessoal.value;
+      var emailPessoalVar = emailPessoal.value;
+      var cpfPessoalVar = cpfPessoal.value;
+      var passwordVar = password.value;
+      var passwordConfirmVar = passwordConfirm.value;
+      var tipoUsuarioVar = 'G';
+
+
+      if (nomeEmpresaVar == "" || cnpjEmpresaVar == "" || telefoneEmpresaVar == "" || nomeAeroportoVar == "" || cepAeroportoVar == "" || cidadeAeroportoVar == "" || bairroAeroportoVar == "" || ruaAeroportoVar == "" || ufAeroportoVar == "" || numeroAeroportoVar == "" || nomePessoalVar == "" || emailPessoalVar == "" || cpfPessoalVar == "" || passwordVar == "") {
+        Swal.fire({
+          title: 'Error!',
+          text: 'Preencha todos os campos para continuar',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        })
+      }
+      else if (!emailPessoalVar.indexOf("@") || emailPessoalVar.startsWith("@") || emailPessoalVar.endsWith("@") || !emailPessoalVar.endsWith(".com")) {
+        Swal.fire({
+          title: 'Error!',
+          text: 'Insira um e-mail válido',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        })
+      }
+      else if (passwordVar.length < 8) {
+        Swal.fire({
+          title: 'Error!',
+          text: 'A senha deve ter no mínimo 8 dígitos',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        })
+      }
+      else if (passwordVar != passwordConfirmVar) {
+        Swal.fire({
+          title: 'Error!',
+          text: 'Senha não estão iguais.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        })
+      } else {
+
+
+
+
+        fetch("/empresa/cadastrar", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            nomeEmpresaServer: nomeEmpresaVar,
+            cnpjEmpresaServer: cnpjEmpresaVar,
+            telefoneEmpresaServer: telefoneEmpresaVar,
+            nomeAeroportoServer: nomeAeroportoVar,
+            cepAeroportoServer: cepAeroportoVar,
+            cidadeAeroportoServer: cidadeAeroportoVar,
+            bairroAeroportoServer: bairroAeroportoVar,
+            ufAeroportoServer: ufAeroportoVar,
+            ruaAeroportoServer: ruaAeroportoVar,
+            numeroAeroportoServer: numeroAeroportoVar,
+            nomePessoalServer: nomePessoalVar,
+            emailPessoalServer: emailPessoalVar,
+            cpfPessoalServer: cpfPessoalVar,
+            passwordServer: passwordVar,
+            tipoUsuarioServer: tipoUsuarioVar
+          })
+        }).then(function (resposta) {
+          console.log("resposta: ", resposta);
+          if (resposta.ok) {
+            Swal.fire({
+              title: 'Sucesso!',
+              text: 'Cadastro realizado com sucesso! Redirecionando para tela de Login',
+              icon: 'success',
+              confirmButtonText: 'OK'
+            })
+
+            setTimeout(() => {
+              window.location = "sing-in.html";
+            }, "2000")
+
+          } else {
+            throw ("Houve um erro ao tentar realizar o cadastro!");
+          }
+        }).catch(function (resposta) {
+          console.log(`#ERRO: ${resposta}`);
+        });
+      }
+    }
+
+
+    const inputTelefone = document.getElementById("telefoneEmpresa")
+    const inputCpf = document.getElementById("cpfPessoal");
+    const inputCnpj = document.getElementById("cnpjEmpresa");
+    const inputCep = document.getElementById("cepAeroporto");
+    const inputLogradouro = document.getElementById("ruaAeroporto");
+    const inputUf = document.getElementById("ufAeroporto");
+    const inputBairro = document.getElementById("bairroAeroporto");
+    const inputCidade = document.getElementById("cidadeAeroporto");
+    var cepAero = "";
+
+    const cep = () => {
+      if (inputCep.value.length < 9) {
+        return
+      }
+      cepAero = cepAero.replace("-", "");
+      fetch(`https://viacep.com.br/ws/${cepAero}/json/`).then(function (response) {
+        console.log(response)
+        if (response.ok) {
+          response.json().then(function (response) {
+            //console.log(`Dados recebidos: ${JSON.stringify(response)}`);
+            inputLogradouro.value = response.logradouro;
+            inputUf.value = response.uf;
+            inputCidade.value = response.localidade;
+            inputBairro.value = response.bairro;
+          })
+        }
+      })
+    }
+
+    inputCep.addEventListener("input", (e) => { numberMask(e, inputCep), cepMask(e, inputCep) })
+    inputTelefone.addEventListener("input", (e) => { numberMask(e, inputTelefone), telefoneMask(e, inputTelefone) })
+    inputCpf.addEventListener("input", (e) => { numberMask(e, inputCpf), cpfMask(e, inputCpf) })
+    inputCnpj.addEventListener("input", (e) => { numberMask(e, inputCnpj), cnpjMask(e, inputCnpj) })
+
+    function numberMask(e, campo) {
+      if (isNaN(e.data)) {
+        campo.value = campo.value.slice(0, -1)
+      }
+    }
+
+    let telefoneAero = ''
+    function telefoneMask(e, campo) {
+      if (e.inputType.startsWith('deleteContent') || campo.value.length == campo.maxLength) {
+        return
+      }
+      if (campo.value.length >= 1 && !campo.value.includes('(')) {
+        campo.value = "(" + campo.value;
+      }
+      if (campo.value.length >= 3 && !campo.value.includes(')')) {
+        campo.value = campo.value.slice(0, 3) + ")" + campo.value.slice(3);
+      }
+      if (campo.value.length >= 4 && !campo.value.includes(' ')) {
+        campo.value = campo.value.slice(0, 4) + " " + campo.value.slice(4);
+      }
+      if (campo.value.length >= 9 && !campo.value.includes('-')) {
+        campo.value = campo.value.slice(0, 9) + "-" + campo.value.slice(9);
+      }
+    }
+
+    function cepMask(e, campo) {
+      if (campo.value.length >= 5 && !e.inputType.startsWith('deleteContent') && !campo.value.includes('-')) {
+        campo.value = campo.value.slice(0, 5) + "-" + campo.value.slice(5);
+      }
+      cepAero = campo.value;
+    }
+
+    function cpfMask(e, campo) {
+      if (e.inputType.startsWith('deleteContent') || campo.value.length == campo.maxLength) {
+        return
+      }
+      if (campo.value.length >= 3 && campo.value.charAt(3) != '.') {
+        campo.value = campo.value.slice(0, 3) + "." + campo.value.slice(3);
+      }
+      if (campo.value.length >= 7 && campo.value.charAt(7) != '.') {
+        campo.value = campo.value.slice(0, 7) + "." + campo.value.slice(7);
+      }
+      if (campo.value.length >= 11 && !campo.value.includes('-')) {
+        campo.value = campo.value.slice(0, 11) + "-" + campo.value.slice(11);
+      }
+    }
+
+    function cnpjMask(e, campo) {
+      if (e.inputType.startsWith('deleteContent') || campo.value.length == campo.maxLength) {
+        return
+      }
+      if (campo.value.length >= 2 && campo.value.charAt(2) != '.') {
+        campo.value = campo.value.slice(0, 2) + "." + campo.value.slice(2);
+      }
+      if (campo.value.length >= 6 && campo.value.charAt(6) != '.') {
+        campo.value = campo.value.slice(0, 6) + "." + campo.value.slice(6);
+      }
+      if (campo.value.length >= 10 && !campo.value.includes('/')) {
+        campo.value = campo.value.slice(0, 10) + "/" + campo.value.slice(10);
+      }
+      if (campo.value.length >= 15 && !campo.value.includes('-')) {
+        campo.value = campo.value.slice(0, 15) + "-" + campo.value.slice(15);
+      }
+    }
+  </script>
+
+</body>
+
+</html>

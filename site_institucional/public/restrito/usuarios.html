@@ -1,0 +1,324 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="../assets/img/LogoAzulEscuro.svg" rel="icon">
+    <title>Gerenciamento de Usuários</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous"> 
+    <script src="https://kit.fontawesome.com/2eecc47c4e.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+  
+    <link href="../assets/css/dashboard.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="./js/main.js"></script>
+  </head>
+  
+  <body id="page-top" onload="iniciarSessao(pagina)">
+    <div id="wrapper">
+      <!-- Sidebar -->
+      <my-sidebar></my-sidebar>
+      <!-- Sidebar -->
+      <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+          <!-- TopBar -->
+          <my-topbar></my-topbar>
+          <!-- Topbar -->
+          <!-- Container Fluid-->
+          <div class="container-fluid" id="container-wrapper">
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+              <h1 class="h3 mb-0 text-gray-800">Gerenciamento de Usuários</h1>
+              
+            </div>
+  
+            <div class="row">
+              <div class="col-lg-12 mb-4">
+                <!-- Simple Tables -->
+                <div class="card">
+                  <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <input onclick="exibirTelaCadastro()" id="adicionar" class="dropdown-toggle btn btn-primary btn-sm" type="button" value="Adicionar Usuário">
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table align-items-center table-flush">
+                      <thead class="thead-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Cargo</th>
+                            <th>Ação</th>
+                        </tr>
+                        </thead>
+                        <tbody id="body-table">
+                        </tbody>
+                    </table>
+                  </div>
+                  <div class="card-footer"></div>
+                </div>
+              </div>
+            </div>
+            <!--Row-->
+          </div>
+          <!---Container Fluid-->
+        </div>
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+          <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+              <span>AIR-DATA
+                <script> document.write(new Date().getFullYear()); </script>20222022 - DEVELOPED BY
+                <b><a target="_blank">SPTECH STUDENTS</a></b>
+            </span>
+            </div>
+          </div>
+        </footer>
+        <!-- Footer -->
+      </div>
+    </div>
+    <!-- Scroll to top -->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    <script src="../assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../assets/js/ruang-admin.min.js"></script>  
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="./js/script.js"></script>
+</body>
+</html>
+<script>
+    document.querySelector("#usuario-link").classList.add("active")
+
+    const pagina = 'usuarios'
+
+    var nome, senha, email, cpf;
+
+    function exibirTelaCadastro() {
+
+      var tipoUsuario = sessionStorage.TIPO_USUARIO;
+
+        Swal.fire({
+        title: 'Cadastrar usuário',
+        html:
+            'Nome<br>' +
+            '<input id="nome" class="swal2-input"><br><br>' +
+            'Email<br>' + 
+            '<input id="email" class="swal2-input"><br><br>' + 
+            'Senha<br>' + 
+            '<input  type="password" id="senha" class="swal2-input"><br><br>' +
+            'CPF<br>' + 
+            '<input id="cpf" class="swal2-input"><br><br>' +
+            'Cargo<br><br>' +
+            '<select id="cargo">' +
+              '<option value="">Escolha um cargo...</option>' +
+              '<option id="optSupervisor" value="S">Supervisor</option>' +
+              '<option id="optComum" value="F">Funcionário Comum</option>' +
+            '</select>',
+        confirmButtonText: 'Cadastrar',
+        showLoaderOnConfirm: true,
+        }).then((resultado) => {
+          if(resultado.isConfirmed) {
+            nome = document.getElementById('nome').value
+            email = document.getElementById('email').value
+            senha = document.getElementById('senha').value
+            cpf = document.getElementById('cpf').value
+            cargo = document.getElementById('cargo').value
+            if(validarCadastro(nome, email, senha, cpf, cargo)) {
+              cadastrarUsuario(nome, email, senha, cpf, cargo)
+            } else {
+              Swal.fire({
+                title: 'Erro!"',
+                text: 'Informações incorretas, verifique se você digitou corretamente.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+              })
+              setTimeout(() => {
+                exibirTelaCadastro();
+              }, "2000")
+            }
+          }
+        })
+      var optComum = document.getElementById('optComum')
+      var optSupervisor = document.getElementById('optSupervisor')
+      console.log(optComum, optSupervisor)
+      if(tipoUsuario == "G") {
+        optComum.style.display = 'none';
+        optSupervisor.style.display = 'block'
+      } else {
+        optComum.style.display = 'block';
+        optSupervisor.style.display = 'none';
+      }
+
+      const inputCpf = document.getElementById('cpf');
+      cepAero = "";
+
+      inputCpf.addEventListener("keyup", cpfMask);
+
+      function cpfMask(e) {
+        if ((inputCpf.value).length == 3 || (inputCpf.value).length == 7) {
+          inputCpf.value += ".";
+        }
+        if((inputCpf.value).length == 11){
+          inputCpf.value += "-";
+        }
+        var charCode = (e.which) ? e.which : e.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57) || (inputCpf.value).length > 14) {
+          inputCpf.value = cepAero;
+        }
+        else {
+          cepAero = inputCpf.value;
+        }
+      }
+    }
+
+    function validarCadastro(nome, email, senha, cpf, cargo) {
+      if (nome == "" || email == "" || senha == "" || cpf == "" || cargo == "") {
+        return false;
+      } else if (!email.indexOf("@") || email.startsWith("@") || email.endsWith("@") || !email.endsWith(".com")) {
+        return false;
+      } else if (senha.length < 8) {
+        return false;
+      } else if (cpf.length != 14) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+
+    function cadastrarUsuario(nome, email, senha, cpf, cargo) {
+      var nomeVar = nome;
+      var emailVar = email;
+      var senhaVar = senha;
+      var cpfVar = cpf;
+      var cargoVar = cargo;
+      var fkGestorVar = sessionStorage.ID_GESTOR;
+      var fkAeroportoVar = sessionStorage.ID_AEROPORTO;
+      var tipoUsuarioVar = sessionStorage.TIPO_USUARIO;
+      var idUsuarioVar = sessionStorage.ID_USUARIO;
+      console.log('entrou')
+      fetch("/usuarios/cadastrar", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            nomeServer: nomeVar,
+            emailServer: emailVar,
+            senhaServer: senhaVar,
+            cpfServer: cpfVar,
+            cargoServer: cargoVar,
+            fkGestorServer: fkGestorVar,
+            fkAeroportoServer: fkAeroportoVar,
+            tipoUsuarioServer: tipoUsuarioVar,
+            idUsuarioServer: idUsuarioVar,
+          })
+        }).then(function (resposta) {
+          console.log("resposta: ", resposta);
+          if (resposta.ok) {
+            Swal.fire({
+                title: 'Sucesso!',
+                text: 'Cadastro realizado com sucesso!',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            })
+            setTimeout(() => {
+              location.reload();
+            }, "2000")
+          } else {
+            throw ("Houve um erro ao tentar realizar o cadastro!");
+          }
+        }).catch(function (resposta) {
+          console.log(`#ERRO: ${resposta}`);
+        });
+      }   
+
+      function listarTabelaUsuarios(listaUsuarios) {
+        var bodyTable = document.getElementById('body-table');
+        var cargo = "";
+
+        for(i = 0; i < listaUsuarios.length; i++) {
+          if(listaUsuarios[i].tipoUsuario == "G") {
+            cargo = "Gestor";
+          } else if(listaUsuarios[i].tipoUsuario == "S") {
+            cargo = "Supervisor";
+          } else {
+            cargo = "Funcionário Comum";
+          }
+          bodyTable.innerHTML += `
+          <tr>
+            <td><a href="#">#${listaUsuarios[i].idUsuario}</a></td>
+            <td>${listaUsuarios[i].nomeUsuario}</td>
+            <td>${listaUsuarios[i].emailUsuario}</td>
+            <td>${cargo}</td>
+            <td><a href="#" onclick="exibirTelaConfirmacao(${listaUsuarios[i].idUsuario}, ${listaUsuarios[i].fkSupervisor}, ${listaUsuarios[i].fkGestor})" class="btn btn-sm btn-primary btn-deletar">Deletar</a></td>
+          </tr>
+          `
+        }
+      }
+
+      function exibirTelaConfirmacao(idUsuario, fkSupervisor, fkGestor) {
+        var idUsuarioSessao = sessionStorage.ID_USUARIO;
+
+        if(idUsuarioSessao == fkSupervisor || idUsuarioSessao == fkGestor) {
+          Swal.fire({
+            title: 'Você tem certeza?',
+            text: "Essa ação não pode ser revertida!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim, tenho certeza!',
+            cancelButtonText: 'Cancelar'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              deletarUsuario(idUsuario);
+            }
+          })
+        } else {
+          Swal.fire(
+                'Erro!',
+                'Você não tem permissão para deletar esse usuário.',
+                'error',
+          )
+        }
+      }
+
+      function deletarUsuario(idUsuario) {
+        fetch("/usuarios/deletar", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            idUsuarioServer: idUsuario
+          })
+        }).then(function (resposta) {
+          console.log("resposta: ", resposta);
+          if (resposta.ok) {
+            console.log("Usuário deletado")
+            Swal.fire(
+                'Deletado!',
+                'O usuário foi deletado.',
+                'success'
+            )
+            setTimeout(() => {
+              location.reload();
+            }, "2000")
+          } else {
+            throw (
+              Swal.fire(
+                'Erro!',
+                'Não é possível deletar esse supervisor pois ele possui um funcionário.',
+                'error'
+              )
+            );
+          }
+        }).catch(function (resposta) {
+          console.log(`#ERRO: ${resposta}`);
+        });
+
+      }
+
+
+</script>
